@@ -18,16 +18,24 @@ public class JobScheduler {
     @Autowired
     private Job actualizarPreciosJob;
 
-    @Scheduled(fixedRate = 10000)
+    /**
+     * Ejecuta el Job "actualizarPreciosJob" cada 10 minutos.
+     * Se generan nuevos parámetros de trabajo con la marca de tiempo actual.
+     */
+    @Scheduled(fixedRate = 600000) // Ejecuta cada 10 minutos
     public void runActualizarPreciosJob() {
         try {
+            // Crear JobParameters usando la marca de tiempo actual para asegurar que el job se ejecuta cada vez
             JobParameters params = new JobParametersBuilder()
                     .addLong("time", System.currentTimeMillis())
                     .toJobParameters();
 
+            // Ejecutar el Job y registrar el estado de la ejecución
             JobExecution execution = jobLauncher.run(actualizarPreciosJob, params);
             System.out.println("Job Status: " + execution.getStatus());
+
         } catch (Exception e) {
+            // Manejar excepciones y mostrar traza de error en consola
             e.printStackTrace();
         }
     }

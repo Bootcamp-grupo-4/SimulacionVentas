@@ -12,11 +12,22 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class SimulacionVentasListener implements JobExecutionListener {
 
+    /**
+     * Método que se ejecuta antes de que inicie el Job.
+     *
+     * @param jobExecution Información de la ejecución del Job actual.
+     */
     @Override
     public void beforeJob(JobExecution jobExecution) {
         log.info("--- Starting job to simulate ticket sales with id {}", jobExecution.getId());
     }
 
+    /**
+     * Método que se ejecuta después de la finalización del Job.
+     * Dependiendo del estado de la ejecución, se registra si el Job completó con éxito o si falló.
+     *
+     * @param jobExecution Información de la ejecución del Job actual.
+     */
     @Override
     public void afterJob(JobExecution jobExecution) {
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
